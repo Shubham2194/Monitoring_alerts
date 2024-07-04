@@ -93,7 +93,7 @@ kubectl port-forward service/alertmanager 9093
 ![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/9b18fbc0-817b-48c9-a944-db63e7997103)
 
 
-Go to alert section and see the alerts congigured properly
+Go to alert section and see the alerts configured properly
 
 
 ![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/5f003f36-e84e-4ac5-bc4c-3b67caebd53a)
