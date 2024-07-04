@@ -87,6 +87,7 @@ Check everything is up and runnig
 Lets port forward prometheus and Alert manager to see UI and alerts
 
 kubectl port-forward service/prometheus-service 9090
+
 kubectl port-forward service/alertmanager 9093
 
 ![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/9b18fbc0-817b-48c9-a944-db63e7997103)
