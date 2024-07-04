@@ -31,5 +31,5 @@ data:
         require_tls: false
     - name: slack_demo
       slack_configs:
-      - api_url: https://hooks.slack.com/services/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
-        channel: '#proview-prod-alert'
+      - api_url: <SLACK WEBHOOK url>
+        channel: '#prod-alert'
