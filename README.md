@@ -9,26 +9,31 @@ Prometheus | Alert manager | Grafana
 
 **PROMETHEUS | ALERT MANAGER with SLACK**
 
-STEP 1: Clone github repo
+**STEP 1: Clone github repo**
+
 git clone https://github.com/Shubham2194/Monitoring_alerts.git
 
 
-STEP 2: Alerts configuration
+**STEP 2: Alerts configuration**
+
 cd prometheus && nano config-map.yaml 
 
-here i have added two prometheus rules >>
+
+Here I have added two prometheus rules >>
+
 
 - If status of any pod is failed in backend namespace for 1 min then send alert
 - If status == Pending|Unknown|Failed|CrashLoopBackoff  > 0  for 1 min then send alert
-- 
+ 
 
-Step 3: Apply prometheus manifests
+**Step 3: Apply prometheus manifests**
+
 Kubectl create ns monitoring
 
 kubectl apply -f .
 
 
-Step 5: Create Slack webhook URL to intergrate alertmanager with slack channel
+**Step 5: Create Slack webhook URL to intergrate alertmanager with slack channel**
 
 Crate a channel on slack
 
@@ -53,8 +58,10 @@ Copy the webhook URL and Save
 
 
 
-Step 4:
+**Step 4: Add Slack Webhook URL in Alertmanager configmap**
+
 cd alert-manager
+
 nano AlertManagerCongigmap.yaml
 
 Add the Webhook URL and the Slack channel name
@@ -63,7 +70,7 @@ Kubectl apply -f .
 
 ![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/6d9e0b32-6bd5-4b0f-9022-76c92a1358a8)
 
-Step 5: UI
+**Step 5: Access UI**
 
 check everything is up and runnig
 
@@ -81,7 +88,8 @@ Go to alert section and see the alerts congigured properly
 
 ![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/5f003f36-e84e-4ac5-bc4c-3b67caebd53a)
 
-Step 6: Alert testing
+
+**Step 6: Alert testing**
 
 Everything looks cool , now lets try to add a test alert to test on promethesu rules
 
@@ -101,8 +109,8 @@ Add this in prometheus/config-map.yaml
 
 kubectl apply -f prometheus/config-map.yaml && kubectl delete pod of prometheus (it will recreate and bring new alert)
 
-Step 7: 
-Head over to slack channel and you can see test alert
+
+**Step 7: Head over to slack channel and you can see test alert**
 
 ![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/e91e2ae3-ca30-435e-bcb5-26c8c1757cb8)
 
