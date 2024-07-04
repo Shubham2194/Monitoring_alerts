@@ -70,13 +70,17 @@ nano AlertManagerCongigmap.yaml
 
 Add the Webhook URL and the Slack channel name
 
+![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/e2391a14-516f-40af-86e2-e8fac67961fe)
+
+
 Kubectl apply -f .
 
 ![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/6d9e0b32-6bd5-4b0f-9022-76c92a1358a8)
 
+
 **Step 5: Access UI**
 
-check everything is up and runnig
+Check everything is up and runnig
 
 ![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/954908f4-db11-4ec6-9804-7eda2ad68917)
 
@@ -86,6 +90,7 @@ kubectl port-forward service/prometheus-service 9090
 kubectl port-forward service/alertmanager 9093
 
 ![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/9b18fbc0-817b-48c9-a944-db63e7997103)
+
 
 Go to alert section and see the alerts congigured properly
 
