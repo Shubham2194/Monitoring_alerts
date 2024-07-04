@@ -42,9 +42,13 @@ Head over to slack api :
 https://api.slack.com/apps/  
 (sigin in to your work space)
 
-![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/3203175f-c6fd-4aaf-9b67-02f1cf2c48d2)
+After siging up
 
 Click on Create New app > FROM scratch > specifies App name and select workspace > Create app
+
+
+![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/3203175f-c6fd-4aaf-9b67-02f1cf2c48d2)
+
 
 On the left side in settings menu click on incoming webhooks
 
