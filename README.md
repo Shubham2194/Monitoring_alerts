@@ -1,5 +1,5 @@
 # Monitoring_alerts
-Prometheus | Alert manager | Grafana
+Prometheus | Alert manager | Kube-state-metrics
 
 
 
