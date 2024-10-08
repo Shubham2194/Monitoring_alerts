@@ -21,12 +21,34 @@ data:
     - name: Pod failed or in pending state
       rules:
       - alert: Pod Failing
-        expr: sum by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Unknown|Failed|CrashLoopBackoff", namespace="backend"}) > 0
+        expr: sum by (namespace, pod) (kube_pod_status_phase{phase=~"Pending|Unknown|Failed|CrashLoopBackoff|ErrImagePull", namespace="backend"}) > 0
         for: 1m
         labels:
           severity: slack
         annotations:
           summary: Pod pending in backend Namespace
+
+    - name: Health Check Alert Product API
+      rules:
+      - alert: HealthCheckFailed
+        expr: probe_http_status_code{job="blackbox", instance="https://xyz.com/abc/product"} != 200
+        for: 10m
+        labels:
+          severity: slack
+        annotations:
+          summary: "Health check failed for the PRODUCT endpoint"
+          description: "The health check of PRODUCT API did not return 200 status code from last 10 minutes, please check"
+
+    - name: Health Check Alert CORE API
+      rules:
+      - alert: HealthCheckFailed
+        expr: probe_http_status_code{job="blackbox", instance="https://xyz.com/abc/core"} != 200
+        for: 10m
+        labels:
+          severity: slack
+        annotations:
+          summary: "Health check failed for the CORE endpoint"
+          description: "The health of CORE API did not return 200 status code from last 10 minutes, please check"
 
   prometheus.yml: |-
     global:
