@@ -187,11 +187,14 @@ Note: Check complete in prometheus/config-map.yaml
         summary: Endpoint Down
         description: "Endpoint is Down\n {{ $labels.instance }}"
 ```
+
 This will check if our URL is down for last 2min and give you slack notification.
 
 **Step 12: Redeploy configmap of prometheus and restart prometheus and port forward to see new alert
 
 ```sh
+kubectl delete cm prometheus-server-conf  -n monitoring
+kubectl apply -f prometheus/config-map.yaml
 kubectl rollout restart deploy prometheus-deployment  -n monitoring
 kubectl port-forward service/prometheus-service  -n monitoring 9090 
 ```
