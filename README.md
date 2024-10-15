@@ -1,5 +1,5 @@
 # Monitoring_alerts
-Prometheus | Alert manager | Kube-state-metrics
+Prometheus | Alert manager | Kube-state-metrics | Black-Box operator
 
 
 
@@ -123,6 +123,67 @@ kubectl apply -f prometheus/config-map.yaml && kubectl delete pod of prometheus 
 **Step 8: Head over to slack channel and you can see test alert**
 
 ![image](https://github.com/Shubham2194/Monitoring_alerts/assets/83746560/e91e2ae3-ca30-435e-bcb5-26c8c1757cb8)
+
+
+
+
+**Step 9 : Setup health check alert using blcak Box operator
+ (Blackbox Exporter is a versatile monitoring tool that can work to check endpoints over HTTP, HTTPS, DNS, TCP, ICMP, and others)
+
+- Install Black box operator
+```sh
+cd black_box-exporter
+bash setup.sh
+```
+
+**Step 10: Add status code in Black-box Configmap and add our black box job with URL we want to monitor in prometheus.yml
+add the below in prometheus configmap under prometheus.yaml
+
+```yml
+
+  - job_name: blackbox
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+        - https://api.myorganization.com
+        - https://license.myorganization.com
+        - https://api.hubspot.com
+    relabel_configs:
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: prometheus-blackbox-exporter.monitoring:9115
+```
+Note: Check complete in prometheus/config-map.yaml 
+
+**Step 11: Add new rule in the prometheus.rule in the same configmap to monitor Endpoint
+
+```yml
+  - name: critical-rules
+    rules:
+    - alert: ProbeFailing
+      expr: up{job="blackbox"} == 0 or probe_success{job="blackbox"} == 0
+      for: 2m
+      labels:
+        severity: critical
+      annotations:
+        summary: Endpoint Down
+        description: "Endpoint is Down\n {{ $labels.instance }}"
+```
+This will check if our URL is down for last 2min and give you slack notification.
+
+**Step 12: Redeploy configmap of prometheus and restart prometheus and port forward to see new alert
+
+```sh
+kubectl rollout restart deploy prometheus-deployment  -n monitoring
+kubectl port-forward service/prometheus-service  -n monitoring 9090 
+```
+
+![image](https://github.com/user-attachments/assets/0979c1d8-4404-4758-831c-21792fbf9430)
 
 
 Hope this helps !!
