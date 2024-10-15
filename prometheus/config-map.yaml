@@ -28,28 +28,16 @@ data:
         annotations:
           summary: Pod pending in backend Namespace
 
-    - name: Health Check Alert Product API
+    - name: critical-rules #health-check alert with black-box-job
       rules:
-      - alert: HealthCheckFailed
-        expr: probe_http_status_code{job="blackbox", instance="https://xyz.com/abc/product"} != 200
-        for: 10m
+      - alert: ProbeFailing
+        expr: up{job="blackbox"} == 0 or probe_success{job="blackbox"} == 0
+        for: 2m
         labels:
-          severity: slack
+          severity: critical
         annotations:
-          summary: "Health check failed for the PRODUCT endpoint"
-          description: "The health check of PRODUCT API did not return 200 status code from last 10 minutes, please check"
-
-    - name: Health Check Alert CORE API
-      rules:
-      - alert: HealthCheckFailed
-        expr: probe_http_status_code{job="blackbox", instance="https://xyz.com/abc/core"} != 200
-        for: 10m
-        labels:
-          severity: slack
-        annotations:
-          summary: "Health check failed for the CORE endpoint"
-          description: "The health of CORE API did not return 200 status code from last 10 minutes, please check"
-
+          summary: Endpoint Down
+          description: "Endpoint is Down\n {{ $labels.instance }}"
   prometheus.yml: |-
     global:
       scrape_interval: 5s
@@ -63,6 +51,22 @@ data:
         - targets:
           - "alertmanager.monitoring.svc:9093"
     scrape_configs:
+      - job_name: blackbox  #Black-box-job which we refer in rules section above
+        metrics_path: /probe
+        params:
+          module: [http_2xx]
+        static_configs:
+          - targets:
+            - https://api.myorganization.com
+            - https://license.myorganization.com
+            - https://api.hubspot.com
+        relabel_configs:
+        - source_labels: [__address__]
+          target_label: __param_target
+        - source_labels: [__param_target]
+          target_label: instance
+        - target_label: __address__
+          replacement: prometheus-blackbox-exporter.monitoring:9115
       - job_name: 'node-exporter'
         kubernetes_sd_configs:
           - role: endpoints
