@@ -128,6 +128,7 @@ kubectl apply -f prometheus/config-map.yaml && kubectl delete pod of prometheus 
 
 
 **Step 9 : Setup health check alert using blcak Box operator
+
  (Blackbox Exporter is a versatile monitoring tool that can work to check endpoints over HTTP, HTTPS, DNS, TCP, ICMP, and others)
 
 - Install Black box operator
@@ -136,9 +137,21 @@ cd black_box-exporter
 bash setup.sh
 ```
 
-**Step 10: Add status code in Black-box Configmap and add our black box job with URL we want to monitor in prometheus.yml
-add the below in prometheus configmap under prometheus.yaml
+**Step 10: Add status code in Black-box Configmap
 
+kubectl edit cm prometheus-blackbox-exporter -n monitoring
+```yml
+valid_status_codes:
+- 200
+- 403
+```
+
+![image](https://github.com/user-attachments/assets/00a257f5-92f8-46bf-bb81-7b481ffe46ce)
+
+
+- Now Add our black box job with URL we want to monitor in prometheus.yml
+
+add the below in prometheus configmap under prometheus.yaml
 ```yml
 
   - job_name: blackbox
