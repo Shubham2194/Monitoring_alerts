@@ -127,7 +127,9 @@ kubectl apply -f prometheus/config-map.yaml && kubectl delete pod of prometheus 
 
 
 
-**Step 9 : Setup health check alert using blcak Box operator
+
+**Step 9 : Setup health check alert using black Box operator**
+
 
  (Blackbox Exporter is a versatile monitoring tool that can work to check endpoints over HTTP, HTTPS, DNS, TCP, ICMP, and others)
 
@@ -137,7 +139,7 @@ cd black_box-exporter
 bash setup.sh
 ```
 
-**Step 10: Add status code in Black-box Configmap
+**Step 10: Add status code in Black-box Configmap**
 
 kubectl edit cm prometheus-blackbox-exporter -n monitoring
 ```yml
@@ -149,7 +151,7 @@ valid_status_codes:
 ![image](https://github.com/user-attachments/assets/00a257f5-92f8-46bf-bb81-7b481ffe46ce)
 
 
-- Now Add our black box job with URL we want to monitor in prometheus.yml
+*- Now Add our black box job with URL we want to monitor in prometheus.yml*
 
 add the below in prometheus configmap under prometheus.yaml
 ```yml
@@ -173,7 +175,8 @@ add the below in prometheus configmap under prometheus.yaml
 ```
 Note: Check complete in prometheus/config-map.yaml 
 
-**Step 11: Add new rule in the prometheus.rule in the same configmap to monitor Endpoint
+
+**Step 11: Add new rule in the prometheus.rule in the same configmap to monitor Endpoint**
 
 ```yml
   - name: critical-rules
@@ -190,7 +193,8 @@ Note: Check complete in prometheus/config-map.yaml
 
 This will check if our URL is down for last 2min and give you slack notification.
 
-**Step 12: Redeploy configmap of prometheus and restart prometheus and port forward to see new alert
+**Step 12: Redeploy configmap of prometheus and restart prometheus and port forward to see new alert**
+
 
 ```sh
 kubectl delete cm prometheus-server-conf  -n monitoring
